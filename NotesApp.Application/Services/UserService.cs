@@ -79,12 +79,12 @@ namespace NotesApp.Application.Services
                 {
                     throw new Exception($"Email '{updateUserDto.Email}' is already registered");
                 }
-
-                user.UpdateFromDto(updateUserDto);
-                var updateUser = await _userRepository.UpdateAsync(user);
-
-                return updateUser.ToUserDto();
             }
+
+            user.UpdateFromDto(updateUserDto);
+            var updateUser = await _userRepository.UpdateAsync(user);
+
+            return updateUser.ToUserDto();
         }
     }
 }
