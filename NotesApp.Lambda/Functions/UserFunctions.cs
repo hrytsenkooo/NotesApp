@@ -5,8 +5,6 @@ using Amazon.Lambda.AppSyncEvents;
 using NotesApp.Application.DTOs;
 using Newtonsoft.Json.Linq;
 
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-
 namespace NotesApp.Lambda.Functions
 {
     public class UserFunctions
