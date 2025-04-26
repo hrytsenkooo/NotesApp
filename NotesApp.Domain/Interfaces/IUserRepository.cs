@@ -10,6 +10,6 @@ namespace NotesApp.Domain.Interfaces
         Task<User> UpdateAsync(User user);
         Task DeleteAsync(string id);
         Task<User> GetByUsernameAsync(string username);
-        Task<User> GetByEmailASync(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }

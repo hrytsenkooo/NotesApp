@@ -47,7 +47,7 @@ namespace NotesApp.Infrastructure.Repositories
             return users;
         }
 
-        public async Task<User> GetByEmailASync(string email)
+        public async Task<User> GetByEmailAsync(string email)
         {
             var query = _context.QueryAsync<UserItem>(email, new DynamoDBOperationConfig { IndexName = "EmailIndex" });
 
