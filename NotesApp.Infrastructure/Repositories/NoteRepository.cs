@@ -77,5 +77,25 @@ namespace NotesApp.Infrastructure.Repositories
 
             return note;
         }
+
+        public async Task DeleteNotesByUserIdAsync(string userId)
+        {
+            Console.WriteLine($"Deleting all notes for user: {userId}");
+
+            var notes = await _context.QueryAsync<NoteItem>(
+                userId,
+                new DynamoDBOperationConfig
+                {
+                    IndexName = "UserIdIndex"
+                }).GetRemainingAsync();
+
+            Console.WriteLine($"Found {notes.Count} notes to delete");
+
+            foreach (var note in notes)
+            {
+                Console.WriteLine($"Deleting note: {note.Id}");
+                await _context.DeleteAsync<NoteItem>(note.Id);
+            }
+        }
     }
 }

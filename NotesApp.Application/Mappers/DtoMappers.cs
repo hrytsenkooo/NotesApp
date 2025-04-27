@@ -1,16 +1,19 @@
 ﻿using NotesApp.Application.DTOs;
 using NotesApp.Domain.Models;
+using System.Text.Json;
 
 namespace NotesApp.Application.Mappers
 {
     public static class DtoMappers
-    {
+    { 
         public static UserDto ToUserDto(this User user)
         {
+            if (user == null) return null;
+
             return new UserDto
             {
                 Id = user.Id,
-                UserName = user.UserName,
+                Username = user.Username,
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -21,15 +24,22 @@ namespace NotesApp.Application.Mappers
         {
             return new User
             {
-                UserName = dto.UserName,
+                Username = dto.Username,
                 Email = dto.Email
             };
         }
 
         public static void UpdateFromDto(this User user, UpdateUserDto dto)
         {
-            if (!string.IsNullOrEmpty(dto.UserName)) user.UserName = dto.UserName;
+            Console.WriteLine($"User update: {JsonSerializer.Serialize(user)}");
+            Console.WriteLine($"Data to update: {JsonSerializer.Serialize(dto)}");
+
+            if (!string.IsNullOrEmpty(dto.UserName)) user.Username = dto.UserName;
+
             if (!string.IsNullOrEmpty(dto.Email)) user.Email = dto.Email;
+
+            user.UpdatedAt = DateTime.UtcNow;
+            Console.WriteLine($"User after update: {JsonSerializer.Serialize(user)}");
         }
 
         public static NoteDto ToNoteDto(this Note note)
@@ -59,9 +69,11 @@ namespace NotesApp.Application.Mappers
 
         public static void UpdateFromDto(this Note note, UpdateNoteDto dto)
         {
-            if (dto.Title != null) note.Title = dto.Title;
-            if (dto.Content != null) note.Content = dto.Content;
+            if (!string.IsNullOrEmpty(dto.Title)) note.Title = dto.Title;
+            if (!string.IsNullOrEmpty(dto.Content)) note.Content = dto.Content;
+
             note.IsArchived = dto.IsArchived;
+            note.UpdatedAt = DateTime.UtcNow;
         }
     }
 }

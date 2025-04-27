@@ -10,7 +10,7 @@ namespace NotesApp.Infrastructure.Data.Mappers
             return new UserItem
             {
                 Id = user.Id,
-                UserName = user.UserName,
+                Username = user.Username,
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt
@@ -22,7 +22,7 @@ namespace NotesApp.Infrastructure.Data.Mappers
             return new User
             {
                 Id = userItem.Id,
-                UserName = userItem.UserName,
+                Username = userItem.Username,
                 Email = userItem.Email,
                 CreatedAt = userItem.CreatedAt,
                 UpdatedAt = userItem.UpdatedAt

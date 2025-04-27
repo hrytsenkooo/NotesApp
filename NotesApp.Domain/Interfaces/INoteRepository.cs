@@ -10,5 +10,6 @@ namespace NotesApp.Domain.Interfaces
         Task<Note> CreateAsync(Note note);
         Task<Note> UpdateAsync(Note note);
         Task DeleteAsync(string id);
+        Task DeleteNotesByUserIdAsync(string userId);
     }
 }

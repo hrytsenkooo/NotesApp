@@ -1,6 +1,7 @@
 ﻿using NotesApp.Application.DTOs;
 using NotesApp.Application.Mappers;
 using NotesApp.Domain.Interfaces;
+using System.Text.Json;
 
 namespace NotesApp.Application.Services
 {
@@ -17,16 +18,34 @@ namespace NotesApp.Application.Services
 
         public async Task<NoteDto> CreateNoteAsync(CreateNoteDto createNoteDto)
         {
-            var user = await _userRepository.GetByIdAsync(createNoteDto.UserId);
-            if (user == null)
+            Console.WriteLine($"Creating note with UserId: {createNoteDto.UserId}");
+
+            try
             {
-                throw new Exception($"User with ID {createNoteDto.UserId} not found");
+                var user = await _userRepository.GetByIdAsync(createNoteDto.UserId);
+
+                if (user == null)
+                {
+                    Console.WriteLine($"User with ID {createNoteDto.UserId} not found");
+                    throw new Exception($"User with ID {createNoteDto.UserId} not found");
+                }
+
+                var note = createNoteDto.ToNote();
+                note.Id = Guid.NewGuid().ToString();
+                note.CreatedAt = DateTime.UtcNow;
+                note.UpdatedAt = DateTime.UtcNow;
+
+                var savedNote = await _noteRepository.CreateAsync(note);
+                Console.WriteLine($"Note created successfully: {JsonSerializer.Serialize(savedNote)}");
+
+                return savedNote.ToNoteDto();
             }
-
-            var note = createNoteDto.ToNote();
-            var createdNote = await _noteRepository.CreateAsync(note);
-
-            return createdNote.ToNoteDto();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in CreateNoteAsync: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
         }
 
         public async Task DeleteNoteAsync(string id)

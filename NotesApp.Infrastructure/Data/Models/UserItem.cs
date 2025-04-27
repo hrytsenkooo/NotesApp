@@ -10,7 +10,7 @@ namespace NotesApp.Infrastructure.Data.Models
 
         [DynamoDBProperty("Username")]
         [DynamoDBGlobalSecondaryIndexHashKey("UsernameIndex")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [DynamoDBProperty("Email")]
         [DynamoDBGlobalSecondaryIndexHashKey("EmailIndex")]
