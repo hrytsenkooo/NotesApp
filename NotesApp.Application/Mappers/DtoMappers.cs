@@ -4,8 +4,16 @@ using System.Text.Json;
 
 namespace NotesApp.Application.Mappers
 {
+    /// <summary>
+    /// Provides mapping methods to convert between DTOs and domain models.
+    /// </summary>
     public static class DtoMappers
-    { 
+    {
+        /// <summary>
+        /// Converts a <see cref="User"/> object to a <see cref="UserDto"/>.
+        /// </summary>
+        /// <param name="user">The user object to be mapped.</param>
+        /// <returns>A <see cref="UserDto"/> object containing the user information.</returns>
         public static UserDto ToUserDto(this User user)
         {
             if (user == null) return null;
@@ -20,6 +28,11 @@ namespace NotesApp.Application.Mappers
             };
         }
 
+        /// <summary>
+        /// Converts a <see cref="CreateUserDto"/> to a <see cref="User"/> object.
+        /// </summary>
+        /// <param name="dto">The DTO object containing user data.</param>
+        /// <returns>A <see cref="User"/> object populated with the DTO values.</returns>
         public static User ToUser(this CreateUserDto dto)
         {
             return new User
@@ -29,6 +42,11 @@ namespace NotesApp.Application.Mappers
             };
         }
 
+        /// <summary>
+        /// Updates an existing <see cref="User"/> object using the values from a <see cref="UpdateUserDto"/>.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> object to be updated.</param>
+        /// <param name="dto">The <see cref="UpdateUserDto"/> containing updated user data.</param>
         public static void UpdateFromDto(this User user, UpdateUserDto dto)
         {
             Console.WriteLine($"User update: {JsonSerializer.Serialize(user)}");
@@ -42,6 +60,11 @@ namespace NotesApp.Application.Mappers
             Console.WriteLine($"User after update: {JsonSerializer.Serialize(user)}");
         }
 
+        /// <summary>
+        /// Converts a <see cref="Note"/> object to a <see cref="NoteDto"/>.
+        /// </summary>
+        /// <param name="note">The note object to be mapped.</param>
+        /// <returns>A <see cref="NoteDto"/> object containing the note information.</returns>
         public static NoteDto ToNoteDto(this Note note)
         {
             return new NoteDto
@@ -56,6 +79,11 @@ namespace NotesApp.Application.Mappers
             };
         }
 
+        /// <summary>
+        /// Converts a <see cref="CreateNoteDto"/> to a <see cref="Note"/> object.
+        /// </summary>
+        /// <param name="dto">The DTO object containing note data.</param>
+        /// <returns>A <see cref="Note"/> object populated with the DTO values.</returns>
         public static Note ToNote(this CreateNoteDto dto)
         {
             return new Note
@@ -67,6 +95,11 @@ namespace NotesApp.Application.Mappers
             };
         }
 
+        /// <summary>
+        /// Updates an existing <see cref="Note"/> object using the values from a <see cref="UpdateNoteDto"/>.
+        /// </summary>
+        /// <param name="note">The <see cref="Note"/> object to be updated.</param>
+        /// <param name="dto">The <see cref="UpdateNoteDto"/> containing updated note data.</param>
         public static void UpdateFromDto(this Note note, UpdateNoteDto dto)
         {
             if (!string.IsNullOrEmpty(dto.Title)) note.Title = dto.Title;

@@ -4,6 +4,10 @@ using NotesApp.Infrastructure;
 
 namespace NotesApp.Lambda
 {
+    /// <summary>
+    /// The Startup class configures the services required for the Lambda function.
+    /// It sets up dependency injection for application and infrastructure services.
+    /// </summary>
     public class Startup
     {
         public static ServiceProvider ConfigureServices()

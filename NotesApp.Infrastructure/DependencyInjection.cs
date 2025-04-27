@@ -5,6 +5,9 @@ using NotesApp.Infrastructure.Repositories;
 
 namespace NotesApp.Infrastructure
 {
+    /// <summary>
+    /// Provides extension methods to register infrastructure services with the dependency injection container.
+    /// </summary>
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)

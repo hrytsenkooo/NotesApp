@@ -10,10 +10,16 @@ using NotesApp.Application.Services;
 
 namespace NotesApp.Lambda
 {
+    /// <summary>
+    /// The main entry point for the AWS Lambda function that handles AppSync GraphQL requests.
+    /// </summary>
     public class Function
     {
         private readonly ServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Initializes the Lambda function by setting up dependency injection and serializer options.
+        /// </summary>
         public Function()
         {
             var services = new ServiceCollection();
@@ -26,6 +32,12 @@ namespace NotesApp.Lambda
             };
         }
 
+        /// <summary>
+        /// The handler for incoming AppSync events (GraphQL queries and mutations).
+        /// </summary>
+        /// <param name="appsyncEvent">The event data received from AppSync.</param>
+        /// <param name="context">The Lambda context providing details about the invocation.</param>
+        /// <returns>The result of the GraphQL query or mutation.</returns>
         public async Task<object> FunctionHandler(AppSyncEvent appsyncEvent, ILambdaContext context)
         {
             context.Logger.LogLine($"Received event: {JsonSerializer.Serialize(appsyncEvent)}");
@@ -44,6 +56,13 @@ namespace NotesApp.Lambda
             }
         }
 
+        /// <summary>
+        /// Handles GraphQL queries based on the field name.
+        /// </summary>
+        /// <param name="fieldName">The field name of the GraphQL query.</param>
+        /// <param name="arguments">The arguments passed with the query.</param>
+        /// <param name="context">The Lambda context for logging and tracing.</param>
+        /// <returns>The result of the query.</returns>
         private async Task<object> HandleQuery(string fieldName, Dictionary<string, object> arguments, ILambdaContext context)
         {
             switch (fieldName)
@@ -86,6 +105,13 @@ namespace NotesApp.Lambda
             }
         }
 
+        /// <summary>
+        /// Handles GraphQL mutations based on the field name.
+        /// </summary>
+        /// <param name="fieldName">The field name of the GraphQL mutation.</param>
+        /// <param name="arguments">The arguments passed with the mutation.</param>
+        /// <param name="context">The Lambda context for logging and tracing.</param>
+        /// <returns>The result of the mutation.</returns>
         private async Task<object> HandleMutation(string fieldName, Dictionary<string, object> arguments, ILambdaContext context)
         {
             switch (fieldName)
@@ -160,17 +186,26 @@ namespace NotesApp.Lambda
         }
     }
 
+    /// <summary>
+    /// Custom exception for handling Lambda-specific errors.
+    /// </summary>
     public class LambdaException : Exception
     {
         public LambdaException(string message) : base(message) { }
     }
 
+    /// <summary>
+    /// Represents the event received from AppSync containing information about the request.
+    /// </summary>
     public class AppSyncEvent
     {
         public AppSyncInfo Info { get; set; }
         public Dictionary<string, object> Arguments { get; set; }
     }
 
+    /// <summary>
+    /// Contains information about the GraphQL query or mutation, including the field name and parent type name.
+    /// </summary>
     public class AppSyncInfo
     {
         public string FieldName { get; set; }
