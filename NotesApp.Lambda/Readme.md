@@ -1,49 +1,44 @@
-# AWS Lambda Empty Function Project
+# NotesApp Lambda Function
 
-This starter project consists of:
-* Function.cs - class file containing a class with a single function handler method
-* aws-lambda-tools-defaults.json - default argument settings for use with Visual Studio and command line deployment tools for AWS
+This directory contains the **AWS Lambda** function for the **NotesApp** project. The Lambda function is responsible for handling the business logic of the application, specifically CRUD operations for users and notes. It interacts with the **Amazon DynamoDB** tables to store and retrieve data, and it is integrated with **AWS AppSync** for GraphQL operations.
 
-You may also have a test project depending on the options selected.
+## Overview
 
-The generated function handler is a simple method accepting a string argument that returns the uppercase equivalent of the input string. Replace the body of this method, and parameters, to suit your needs. 
+The Lambda function in this repository is written in **.NET 8** and handles the following operations:
 
-## Here are some steps to follow from Visual Studio:
+- **Users CRUD operations**: create, read, update, delete operations for managing user data.
+- **Notes CRUD operations**: create, read, update, delete operations for managing note data.
+- **GraphQL resolvers**: the Lambda function acts as the data source for GraphQL queries and mutations in AWS AppSync.
 
-To deploy your function to AWS Lambda, right click the project in Solution Explorer and select *Publish to AWS Lambda*.
+The function is triggered by AWS AppSync to process GraphQL requests, execute the necessary logic (e.g., interacting with DynamoDB), and return the results.
 
-To view your deployed function open its Function View window by double-clicking the function name shown beneath the AWS Lambda node in the AWS Explorer tree.
+## Architecture
 
-To perform testing against your deployed function use the Test Invoke tab in the opened Function View window.
+The Lambda function interacts with two **DynamoDB** tables:
 
-To configure event sources for your deployed function, for example to have your function invoked when an object is created in an Amazon S3 bucket, use the Event Sources tab in the opened Function View window.
+1. **Users table**:
+   - Stores information about users.
+   - Has global secondary indexes on `Email` and `Username` for querying.
 
-To update the runtime configuration of your deployed function use the Configuration tab in the opened Function View window.
+2. **Notes table**:
+   - Stores notes related to users.
+   - Has a global secondary index on `UserId` to query notes by user.
 
-To view execution logs of invocations of your function use the Logs tab in the opened Function View window.
+The Lambda function handles the following types of GraphQL queries and mutations:
 
-## Here are some steps to follow to get started from the command line:
+### Queries:
+- `getUserById`: fetches a user by their `Id`.
+- `getAllUsers`: fetches all users.
+- `getNoteById`: fetches a note by its `Id`.
+- `getAllNotes`: fetches all notes.
+- `getNotesByUserId`: fetches all notes belonging to a specific user.
 
-Once you have edited your template and code you can deploy your application using the [Amazon.Lambda.Tools Global Tool](https://github.com/aws/aws-extensions-for-dotnet-cli#aws-lambda-amazonlambdatools) from the command line.
+### Mutations:
+- `createUser`: creates a new user.
+- `updateUser`: updates an existing user.
+- `deleteUser`: deletes a user.
+- `createNote`: creates a new note.
+- `updateNote`: updates an existing note.
+- `deleteNote`: deletes a note.
 
-Install Amazon.Lambda.Tools Global Tools if not already installed.
-```
-    dotnet tool install -g Amazon.Lambda.Tools
-```
 
-If already installed check if new version is available.
-```
-    dotnet tool update -g Amazon.Lambda.Tools
-```
-
-Execute unit tests
-```
-    cd "NotesApp.Lambda/test/NotesApp.Lambda.Tests"
-    dotnet test
-```
-
-Deploy function to AWS Lambda
-```
-    cd "NotesApp.Lambda/src/NotesApp.Lambda"
-    dotnet lambda deploy-function
-```
